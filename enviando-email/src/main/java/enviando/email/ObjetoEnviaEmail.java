@@ -29,7 +29,7 @@ public class ObjetoEnviaEmail {
 	}
 	
 
-	public void enviarEmail() throws Exception{
+	public void enviarEmail(boolean envioHtml) throws Exception{
 		// Configurando propriedades do JavaMail
 		Properties properties = new Properties();
 		properties.put("mail.smtp.ssl.trust", "*"); /* autenticação de segurança */
@@ -65,7 +65,16 @@ public class ObjetoEnviaEmail {
 		message.setFrom(new InternetAddress(userName, nomeRemetente)); // Quem está enviando
 		message.setRecipients(Message.RecipientType.TO, toUser); // Email de destino
 		message.setSubject(assuntoEmail); // assunto do email
-		message.setText(textoEmail); // campo de texto do email
+		
+		/**
+		 * E-mail customizado com HTML*/
+		if(envioHtml) {
+			message.setContent(textoEmail, "text/html; charset=utf-8");
+			
+		}else {
+			message.setText(textoEmail); // campo de texto do email
+		}
+		
 
 		Transport.send(message);
 	}
